@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Requirement> Requirements => Set<Requirement>();
     public DbSet<ProjectTask> Tasks => Set<ProjectTask>();
     public DbSet<GitHubCommit> GitHubCommits => Set<GitHubCommit>();
+    public DbSet<IntegrationSetting> IntegrationSettings => Set<IntegrationSetting>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

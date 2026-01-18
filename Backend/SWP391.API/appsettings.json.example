@@ -1,0 +1,26 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(local);Database=SWP391_ProjectManagement;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+  },
+  "Jwt": {
+    "Secret": "YourSuperSecretKeyHere_ChangeInProduction_MinLength32Characters!",
+    "Issuer": "SWP391_ProjectManagement",
+    "Audience": "SWP391_ProjectManagement_Users",
+    "ExpiryHours": 24
+  },
+  "GitHub": {
+    "PersonalAccessToken": ""
+  },
+  "Jira": {
+    "BaseUrl": "https://your-company.atlassian.net",
+    "Email": "",
+    "ApiToken": ""
+  }
+}

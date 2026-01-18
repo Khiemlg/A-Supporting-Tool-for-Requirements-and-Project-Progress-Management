@@ -82,7 +82,15 @@ public class AuthService : IAuthService
             };
         }
 
-        // Create new user (default role: TeamMember)
+        // Map RoleId to UserRole enum (1=Admin, 2=Lecturer, 3=TeamLeader, 4=TeamMember)
+        var role = request.RoleId switch
+        {
+            1 => UserRole.Admin,
+            2 => UserRole.Lecturer,
+            3 => UserRole.TeamLeader,
+            _ => UserRole.TeamMember
+        };
+
         var user = new User
         {
             Email = request.Email,
@@ -90,7 +98,7 @@ public class AuthService : IAuthService
             FullName = request.FullName,
             StudentCode = request.StudentCode,
             PhoneNumber = request.PhoneNumber,
-            Role = UserRole.TeamMember
+            Role = role
         };
 
         _context.Users.Add(user);

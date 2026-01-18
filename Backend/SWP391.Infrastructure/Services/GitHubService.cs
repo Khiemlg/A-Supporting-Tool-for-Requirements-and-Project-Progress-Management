@@ -14,7 +14,7 @@ public class GitHubService : IGitHubService
     private readonly HttpClient _httpClient;
     private readonly AppDbContext _context;
     private readonly ILogger<GitHubService> _logger;
-    private readonly string? _token;
+    private readonly string? _configToken;
 
     public GitHubService(
         HttpClient httpClient,
@@ -25,15 +25,29 @@ public class GitHubService : IGitHubService
         _httpClient = httpClient;
         _context = context;
         _logger = logger;
-        _token = configuration["GitHub:PersonalAccessToken"];
+        _configToken = configuration["GitHub:PersonalAccessToken"];
 
         _httpClient.BaseAddress = new Uri("https://api.github.com/");
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
         _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("SWP391-App", "1.0"));
-        
-        if (!string.IsNullOrEmpty(_token))
+    }
+
+    private async Task<string?> GetTokenAsync()
+    {
+        // Try database first, fallback to config
+        var dbToken = await _context.IntegrationSettings
+            .Where(s => s.Key == "GitHub:PAT")
+            .Select(s => s.Value)
+            .FirstOrDefaultAsync();
+        return !string.IsNullOrEmpty(dbToken) ? dbToken : _configToken;
+    }
+
+    private async Task ConfigureAuthAsync()
+    {
+        var token = await GetTokenAsync();
+        if (!string.IsNullOrEmpty(token))
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
     }
 
@@ -41,6 +55,7 @@ public class GitHubService : IGitHubService
     {
         try
         {
+            await ConfigureAuthAsync();
             var commits = new List<GitHubCommitDto>();
             var page = 1;
             var perPage = Math.Min(maxCommits, 100);
@@ -95,6 +110,7 @@ public class GitHubService : IGitHubService
     {
         try
         {
+            await ConfigureAuthAsync();
             var response = await _httpClient.GetAsync($"repos/{repoOwner}/{repoName}/contributors");
             
             if (!response.IsSuccessStatusCode)
@@ -120,6 +136,7 @@ public class GitHubService : IGitHubService
     {
         try
         {
+            await ConfigureAuthAsync();
             var response = await _httpClient.GetAsync($"repos/{repoOwner}/{repoName}");
             
             if (!response.IsSuccessStatusCode)

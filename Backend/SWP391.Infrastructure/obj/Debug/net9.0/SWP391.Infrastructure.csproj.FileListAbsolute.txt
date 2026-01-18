@@ -17,3 +17,4 @@ C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Bac
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Infrastructure\obj\Debug\net9.0\SWP391.Infrastructure.pdb
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Infrastructure\obj\Debug\net9.0\SWP391.Infrastructure.genruntimeconfig.cache
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Infrastructure\obj\Debug\net9.0\ref\SWP391.Infrastructure.dll
+C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Infrastructure\obj\Debug\net9.0\SWP391.Infrastructure.sourcelink.json

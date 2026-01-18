@@ -15,9 +15,9 @@ public class JiraService : IJiraService
     private readonly HttpClient _httpClient;
     private readonly AppDbContext _context;
     private readonly ILogger<JiraService> _logger;
-    private readonly string? _baseUrl;
-    private readonly string? _email;
-    private readonly string? _apiToken;
+    private readonly string? _configBaseUrl;
+    private readonly string? _configEmail;
+    private readonly string? _configApiToken;
 
     public JiraService(
         HttpClient httpClient,
@@ -29,28 +29,47 @@ public class JiraService : IJiraService
         _context = context;
         _logger = logger;
         
-        _baseUrl = configuration["Jira:BaseUrl"]; // e.g., https://yourcompany.atlassian.net
-        _email = configuration["Jira:Email"];
-        _apiToken = configuration["Jira:ApiToken"];
-
-        if (!string.IsNullOrEmpty(_baseUrl))
-        {
-            _httpClient.BaseAddress = new Uri(_baseUrl);
-        }
-
-        if (!string.IsNullOrEmpty(_email) && !string.IsNullOrEmpty(_apiToken))
-        {
-            var auth = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_email}:{_apiToken}"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
-        }
+        _configBaseUrl = configuration["Jira:BaseUrl"];
+        _configEmail = configuration["Jira:Email"];
+        _configApiToken = configuration["Jira:ApiToken"];
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    }
+
+    private async Task<(string? baseUrl, string? email, string? token)> GetCredentialsAsync()
+    {
+        var settings = await _context.IntegrationSettings
+            .Where(s => s.Key.StartsWith("Jira:"))
+            .ToDictionaryAsync(s => s.Key, s => s.Value);
+
+        var baseUrl = settings.GetValueOrDefault("Jira:BaseUrl") ?? _configBaseUrl;
+        var email = settings.GetValueOrDefault("Jira:Email") ?? _configEmail;
+        var token = settings.GetValueOrDefault("Jira:ApiToken") ?? _configApiToken;
+
+        return (baseUrl, email, token);
+    }
+
+    private async Task ConfigureAuthAsync()
+    {
+        var (baseUrl, email, token) = await GetCredentialsAsync();
+        
+        if (!string.IsNullOrEmpty(baseUrl))
+        {
+            _httpClient.BaseAddress = new Uri(baseUrl);
+        }
+
+        if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(token))
+        {
+            var auth = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{email}:{token}"));
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
+        }
     }
 
     public async Task<IEnumerable<JiraIssueDto>> GetProjectIssuesAsync(string projectKey)
     {
         try
         {
+            await ConfigureAuthAsync();
             var jql = $"project={projectKey} ORDER BY created DESC";
             var response = await _httpClient.GetAsync($"/rest/api/3/search?jql={Uri.EscapeDataString(jql)}&maxResults=100");
             
@@ -77,6 +96,7 @@ public class JiraService : IJiraService
     {
         try
         {
+            await ConfigureAuthAsync();
             var response = await _httpClient.GetAsync($"/rest/api/3/issue/{issueKey}");
             
             if (!response.IsSuccessStatusCode)
@@ -180,7 +200,7 @@ public class JiraService : IJiraService
             AssigneeEmail: assigneeEmail,
             Created: fields.GetProperty("created").GetDateTime(),
             Updated: fields.TryGetProperty("updated", out var updated) ? updated.GetDateTime() : null,
-            Url: $"{_baseUrl}/browse/{issue.GetProperty("key").GetString()}"
+            Url: $"{_configBaseUrl}/browse/{issue.GetProperty("key").GetString()}"
         );
     }
 }

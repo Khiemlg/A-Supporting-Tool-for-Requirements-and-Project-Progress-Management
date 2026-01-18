@@ -9,3 +9,4 @@ C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Bac
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Domain\obj\Debug\net9.0\refint\SWP391.Domain.dll
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Domain\obj\Debug\net9.0\SWP391.Domain.pdb
 C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Domain\obj\Debug\net9.0\ref\SWP391.Domain.dll
+C:\Users\giakh\OneDrive\Desktop\FPTU\KY7\PRN222\ProjectByKhiem\ProjectPRN222\Backend\SWP391.Domain\obj\Debug\net9.0\SWP391.Domain.sourcelink.json

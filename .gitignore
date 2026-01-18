@@ -1,0 +1,71 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files (contain secrets)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+!appsettings.json.example
+
+# Sensitive configuration - DON'T COMMIT REAL TOKENS
+# Backend/SWP391.API/bin/Debug/net9.0/appsettings.json
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
+coverage*/
+*.coverage
+*.coveragexml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+*.env
+
+# Compiled output
+dist/
