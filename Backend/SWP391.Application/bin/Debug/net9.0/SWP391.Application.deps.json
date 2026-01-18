@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "SWP391.Application/1.0.0": {
+        "dependencies": {
+          "SWP391.Domain": "1.0.0"
+        },
+        "runtime": {
+          "SWP391.Application.dll": {}
+        }
+      },
+      "SWP391.Domain/1.0.0": {
+        "runtime": {
+          "SWP391.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SWP391.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SWP391.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
